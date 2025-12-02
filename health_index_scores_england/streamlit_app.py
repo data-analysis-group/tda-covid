@@ -196,6 +196,40 @@ PRESET_CONFIGS = {
             "Suggested ε≈0.4."
         ),
     },
+    "🌱 Healthy Places Mega-Structure": {
+        "features": [
+            # Access to services
+            "Access to green space [Pl]", "Private outdoor space [Pl1]",
+            "Access to services [Pl]", "Distance to GP services [Pl2]",
+            "Distance to pharmacies [Pl2]", "Distance to sports or leisure facilities [Pl2]",
+            "Internet access [Pl2]", "Patients offered acceptable GP practice appointments [Pl2]",
+
+            # Crime / safety
+            "Low-level crime [Pl3]", "Personal crime [Pl3]", "Road safety [Pl5]",
+
+            # Living conditions
+            "Noise complaints [Pl5]", "Air pollution [Pl5]", "Household overcrowding [Pl5]",
+            "Rough sleeping [Pl5]",
+
+            # Socioeconomic
+            "Child poverty [Pl4]", "Job-related training [Pl4]", "Unemployment [Pl4]"
+        ],
+        "color": "Avoidable mortality [Pe3]",
+        "notes": "Pure environment/deprivation manifold. Often reveals strong topological gradient lines for mortality levels."
+    },
+    "🌐 Digital Access & Social Participation": {
+        "features": [
+            "Internet access [Pl2]",
+            "Distance to sports or leisure facilities [Pl2]",
+            "Distance to GP services [Pl2]",
+            "Patients offered acceptable GP practice appointments [Pl2]",
+            "Young people in education, employment and apprenticeships [L2]",
+            "Job-related training [Pl4]",
+            "Pupil absences [L2]"
+        ],
+        "color": "Avoidable mortality [Pe3]",
+        "notes": "Tests whether digital connectivity, access, and youth engagement create unexpected mortality patterns."
+    },
 }
 
 HEATMAP_CATEGORY_BUNDLES = {
