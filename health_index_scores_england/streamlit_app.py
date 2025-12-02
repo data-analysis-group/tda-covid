@@ -1149,6 +1149,7 @@ def main() -> None:
             background=background_choice,
         )
         caption_text = f"Features: {', '.join(st.session_state['bm_feature_cols'])} | Colour: {color_metric} | ε = {epsilon}"
+        caption_color = "#111111" if background_choice == "light" else "#f0f0f0"
         fig.add_annotation(
             text=caption_text,
             xref="paper",
@@ -1156,7 +1157,7 @@ def main() -> None:
             x=0,
             y=-0.08,
             showarrow=False,
-            font=dict(color="#f0f0f0", size=12),
+            font=dict(color=caption_color, size=12),
         )
         st.plotly_chart(fig, use_container_width=True)
         st.caption(caption_text)
