@@ -902,7 +902,13 @@ def render_report_pdf(context: Dict[str, Any]) -> bytes:
     return buffer.getvalue()
 
 
-def build_plotly_graph(G: nx.Graph, color_metric: str, size_metric: str, feature_cols: List[str]) -> go.Figure:
+def build_plotly_graph(
+    G: nx.Graph,
+    color_metric: str,
+    size_metric: str,
+    feature_cols: List[str],
+    background: str = "dark",
+) -> go.Figure:
     pos = bm.compute_layout(G)
     edge_x, edge_y = [], []
     for edge in G.edges():
@@ -950,13 +956,14 @@ def build_plotly_graph(G: nx.Graph, color_metric: str, size_metric: str, feature
         hoverinfo="none",
         mode="lines",
     )
+    text_color = "#111111" if background == "light" else "#f0f0f0"
     node_trace = go.Scatter(
         x=[pos[n][0] for n in G.nodes],
         y=[pos[n][1] for n in G.nodes],
         mode="markers+text",
         text=[str(n) for n in G.nodes],
         textposition="middle center",
-        textfont=dict(size=10, color="#111111"),
+        textfont=dict(size=10, color=text_color),
         marker=dict(
             size=node_sizes,
             color=colors,
@@ -969,6 +976,8 @@ def build_plotly_graph(G: nx.Graph, color_metric: str, size_metric: str, feature
         hovertext=hovertext,
     )
     fig = go.Figure(data=[edge_trace, node_trace])
+    bg_color = "rgba(12,12,12,1)" if background == "dark" else "#ffffff"
+    font_color = "#f0f0f0" if background == "dark" else "#111111"
     fig.update_layout(
         title=f"Ball Mapper Graph (color={color_metric})",
         showlegend=False,
@@ -976,9 +985,9 @@ def build_plotly_graph(G: nx.Graph, color_metric: str, size_metric: str, feature
         yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
         height=720,
         margin=dict(l=20, r=20, t=60, b=110),
-        plot_bgcolor="rgba(12,12,12,1)",
-        paper_bgcolor="rgba(12,12,12,1)",
-        font=dict(color="#f0f0f0"),
+        plot_bgcolor=bg_color,
+        paper_bgcolor=bg_color,
+        font=dict(color=font_color),
     )
     return fig
 
@@ -1109,6 +1118,9 @@ def main() -> None:
     )
     st.session_state[size_state_key] = size_metric
 
+    background_toggle = st.checkbox("Light plot background", value=False)
+    background_choice = "light" if background_toggle else "dark"
+
     auto_trigger = (
         st.session_state.get("has_generated_plot", False)
         and (year_changed or epsilon_changed or filters_changed or features_changed or norm_changed)
@@ -1129,7 +1141,13 @@ def main() -> None:
             st.warning(f"{color_metric} is not available as a numeric metric.")
             return
         node_df = bm.nodes_to_dataframe(nodes, labels)
-        fig = build_plotly_graph(G, color_metric, size_metric, st.session_state["bm_feature_cols"])
+        fig = build_plotly_graph(
+            G,
+            color_metric,
+            size_metric,
+            st.session_state["bm_feature_cols"],
+            background=background_choice,
+        )
         caption_text = f"Features: {', '.join(st.session_state['bm_feature_cols'])} | Colour: {color_metric} | ε = {epsilon}"
         fig.add_annotation(
             text=caption_text,
