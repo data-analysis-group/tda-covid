@@ -949,10 +949,11 @@ def build_plotly_graph(
             if feat in G.nodes[n]
         ]
         hovertext.append("<br>".join(base_lines + feature_lines))
+    edge_color = "rgba(60,60,60,0.6)" if background == "light" else "rgba(200,200,200,0.4)"
     edge_trace = go.Scatter(
         x=edge_x,
         y=edge_y,
-        line=dict(width=1, color="rgba(200,200,200,0.4)"),
+        line=dict(width=1, color=edge_color),
         hoverinfo="none",
         mode="lines",
     )
