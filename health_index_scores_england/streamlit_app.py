@@ -953,7 +953,10 @@ def build_plotly_graph(G: nx.Graph, color_metric: str, size_metric: str, feature
     node_trace = go.Scatter(
         x=[pos[n][0] for n in G.nodes],
         y=[pos[n][1] for n in G.nodes],
-        mode="markers",
+        mode="markers+text",
+        text=[str(n) for n in G.nodes],
+        textposition="middle center",
+        textfont=dict(size=10, color="#111111"),
         marker=dict(
             size=node_sizes,
             color=colors,
